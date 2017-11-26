@@ -338,7 +338,7 @@ angular.module('ulakbus')
                     });
 
                 $scope.selectedMenu = $location.path();
-                if($location.path() === '/dashboard' || $location.path() === '/login') {
+                if($location.path() === '/dashboard') {
                     generate_dashboard();
                 }
                 $scope.collapseVar = 0;
