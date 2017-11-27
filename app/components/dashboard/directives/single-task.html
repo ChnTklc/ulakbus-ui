@@ -6,10 +6,10 @@
             </div>
         </div>
         <ul class="task-manager-dropdown dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-            <li ng-repeat="action in actions"><a ng-href="{{action.link}}">{{action.title}}</a></li>
+            <li ng-repeat="action in actions"><a ui-sref="{{action.link}}">{{action.title}}</a></li>
         </ul>
     </div>
-    <a ng-href="{{link}}" class="clearfix">
+    <a href="{{link}}" class="clearfix">
         <span class="task-status">
             <div class="task-circle" uib-tooltip="{{task_tooltip}}" tooltip-placement="right"></div>
             <img ng-if="task.status == false" src="../../img/task-manager-icons/unclaimed.png" uib-tooltip="Sahipsiz" tooltip-placement="right">

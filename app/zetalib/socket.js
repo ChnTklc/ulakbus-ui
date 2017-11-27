@@ -210,7 +210,7 @@
                     socket.ping++;
                     console.log(socket.ping)
                 }
-            }, 30000);
+            }, 10000);
 
             function check(){
                 if (socket.ping > 3){

@@ -27,7 +27,7 @@
             </a>
             <ul class="dropdown-menu">
                 <li ng-repeat="(k, v) in item">
-                    <a ng-href="#/{{v.wf}}/{{v.model}}"
+                    <a ui-sref="#/{{v.wf}}/{{v.model}}"
                     ng-click="breadcrumb([key, v.text], $event)">{{v.text}}</a>
                 </li>
             </ul>

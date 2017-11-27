@@ -98,7 +98,7 @@
                 <div class="col-md-6 text-center link-buttons"
                      ng-repeat="item in $root.quick_menu track by $index">
                     <a
-                            ng-href="#/{{item.wf}}/{{item.model}}?{{item.param}}={{selectedUser.key}}">
+                            ui-sref="#/{{item.wf}}/{{item.model}}?{{item.param}}={{selectedUser.key}}">
                         {{item.text}}
                     </a>
                 </div>

@@ -24,7 +24,8 @@ angular.module(
     'ulakbus', [
         //'ui.bootstrap',
         'angular-loading-bar',
-        'ngRoute',
+        'ui.router',
+        'app_states',
         'ngSanitize',
         'ngCookies',
         'ui.grid',

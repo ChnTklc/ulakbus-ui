@@ -28,9 +28,9 @@
                     </a>
                     <ul class="nav nav-second-level" ng-class="{hidden: $root.collapsed}">
                         <li ng-repeat="(k, v) in item">
-                            <!--<a ng-if="v.model" ng-href="#{{v.url}}" ng- -->
+                            <!--<a ng-if="v.model" ui-sref="#{{v.url}}" ng- -->
                             <!--ng-click="breadcrumb([key, v.text], $event)">{{v.text}}</a>-->
-                            <a ng-href="#/{{v.wf}}/{{v.model}}"
+                            <a ui-sref="#/{{v.wf}}/{{v.model}}"
                                ng-click="breadcrumb([key, v.text], $event)">{{v.text}}</a>
                         </li>
                     </ul>
