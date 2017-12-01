@@ -20,7 +20,7 @@
  * @requires ulakbus.formService
  * @type {ng.$compileProvider|*}
  */
-angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formService'])
+angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formService', 'ui.router'])
     .config(function (sfErrorMessageProvider) {
         sfErrorMessageProvider.setDefaultMessage(302, 'Bu alan zorunludur.');
         sfErrorMessageProvider.setDefaultMessage(200, 'En az {{schema.minLength}} değer giriniz.');
@@ -44,14 +44,14 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
              * @description generateParam is a function to generate required params to send backend api.
              * backend needs that params to work without errors
              * @param {object} scope
-             * @param {object} routeParams
+             * @param {object} stateParams
              * @param {string} cmd
              * @returns {object} scope
              */
-            generateParam: function (scope, routeParams, cmd) {
-                scope.url = routeParams.wf;
+            generateParam: function (scope, stateParams, cmd) {
+                scope.url = stateParams.wf;
 
-                angular.forEach(routeParams, function (value, key) {
+                angular.forEach(stateParams, function (value, key) {
                     if (key.indexOf('_id') > -1 && key !== 'param_id') {
                         scope.param = key;
                         scope.param_id = value;
@@ -61,15 +61,15 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
                 scope.form_params = {
                     //cmd: cmd,
                     // model name in ulakbus
-                    model: routeParams.model,
+                    model: stateParams.model,
                     // generic value passing by backend. would be any of these: id, personel_id, etc.
-                    param: scope.param || routeParams.param,
+                    param: scope.param || stateParams.param,
                     // generic value passing by backend. would be the value of param
-                    id: scope.param_id || routeParams.param_id,
-                    wf: routeParams.wf,
-                    object_id: routeParams.key,
+                    id: scope.param_id || stateParams.param_id,
+                    wf: stateParams.wf,
+                    object_id: stateParams.key,
                     filters: {},
-                    token: routeParams.token
+                    token: stateParams.token
                 };
 
                 if (scope.param_id) {
@@ -171,13 +171,13 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
      *
      * @returns {object}
      */
-    .controller('CRUDController', function ($scope, $routeParams, $location, Generator, CrudUtility) {
+    .controller('CRUDController', function ($scope, $stateParams, $location, Generator, CrudUtility) {
         // get required params by calling CrudUtility.generateParam function
         if ($location.url().indexOf('?=') > 0) {
             return $location.url($location.url().replace('?=', ''));
         }
         // before calling get_wf parameters need to be generated with CrudUtility.generateParam
-        CrudUtility.generateParam($scope, $routeParams);
+        CrudUtility.generateParam($scope, $stateParams);
         Generator.get_wf($scope);
     })
 
@@ -199,7 +199,7 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
      *
      * @returns {object}
      */
-    .controller('CRUDListFormController', function ($scope, $rootScope, $location, $sce, $http, $log, $uibModal, $timeout, Generator, $routeParams, CrudUtility) {
+    .controller('CRUDListFormController', function ($scope, $rootScope, $location, $sce, $http, $log, $uibModal, $timeout, Generator, $stateParams, CrudUtility) {
         // below show crud and $on --> $viewContentLoaded callback is for masking the view with unrendered and ugly html
         $scope.show_crud = false;
         $scope.$on('$viewContentLoaded', function () {
@@ -209,7 +209,7 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
         });
 
         // todo: new feature wf_step is for to start a workflow from a certain step
-        $scope.wf_step = $routeParams.step;
+        $scope.wf_step = $stateParams.step;
 
         // pagination data is coming from api when too much results
         $scope.$watch("pagination.page", function(newVal, oldVal) {
@@ -298,7 +298,7 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
         };
 
         $scope.showCmd = function () {
-            CrudUtility.generateParam($scope, $routeParams, $routeParams.cmd);
+            CrudUtility.generateParam($scope, $stateParams, $stateParams.cmd);
             // todo: refactor createListObjects func
 
             var pageData = Generator.getPageData();
@@ -311,7 +311,7 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
                 // call generator's get_single_item func
                 Generator.get_wf($scope).then(function (res) {
                     $scope.object = res.data.object;
-                    $scope.model = $routeParams.model;
+                    $scope.model = $stateParams.model;
                 });
             }
             $scope.createListObjects();
@@ -336,7 +336,7 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
             // if pageData exists do not call get_wf function and manipulate page with pageData
             if (pageData.pageData === true) {
                 $log.debug('pagedata', pageData.pageData);
-                CrudUtility.generateParam($scope, pageData, $routeParams.cmd);
+                CrudUtility.generateParam($scope, pageData, $stateParams.cmd);
                 setpageobjects(pageData, pageData);
                 if ($scope.second_client_cmd) {
                     $scope.createListObjects();
@@ -344,7 +344,7 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
             }
             // if pageData didn't defined or is {pageData: false} go get data from api with get_wf function
             if (pageData.pageData === undefined || pageData.pageData === false) {
-                CrudUtility.generateParam($scope, $routeParams, $routeParams.cmd);
+                CrudUtility.generateParam($scope, $stateParams, $stateParams.cmd);
                 Generator.get_wf($scope);
             }
 
@@ -361,13 +361,13 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
         };
         $scope.reloadCmd = function () {
             var pageData = Generator.getPageData();
-            CrudUtility.generateParam($scope, pageData, $routeParams.cmd);
+            CrudUtility.generateParam($scope, pageData, $stateParams.cmd);
             $log.debug('reload data', $scope);
             Generator.get_wf($scope);
         };
         $scope.resetCmd = function () {
             var pageData = Generator.getPageData();
-            CrudUtility.generateParam($scope, pageData, $routeParams.cmd);
+            CrudUtility.generateParam($scope, pageData, $stateParams.cmd);
             delete $scope.token;
             delete $scope.filters;
             delete $scope.cmd;
@@ -381,7 +381,7 @@ angular.module('ulakbus.crud', ['schemaForm', 'ui.bootstrap', 'ulakbus.formServi
             reset: $scope.resetCmd
         };
 
-        return executeCmd[$routeParams.cmd]();
+        return executeCmd[$stateParams.cmd]();
 
     })
 

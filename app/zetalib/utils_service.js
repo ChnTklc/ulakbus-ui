@@ -3,8 +3,6 @@
  *
  * This file is licensed under the GNU General Public License v3
  * (GPLv3).  See LICENSE.txt for details.
- *
- * @author Vladimir Baranov
  */
 
 angular.module("ulakbus")

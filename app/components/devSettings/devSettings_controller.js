@@ -16,7 +16,7 @@ angular.module('ulakbus')
         return devSettings;
     });
 
-angular.module('ulakbus.devSettings', ['ngRoute'])
+angular.module('ulakbus.devSettings', ['ui.router'])
 
     .controller('DevSettingsController', function ($scope, $cookies, $rootScope, RESTURL, DevSettings) {
         $scope.backendurl = $cookies.get("backendurl");

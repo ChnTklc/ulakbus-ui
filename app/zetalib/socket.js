@@ -184,7 +184,6 @@
         /**
          * Private Methods
          */
-
         /**
          * Ping-Pong
          * @description pinging ws to check network connection and to keep connection alive.
@@ -210,10 +209,10 @@
                     socket.ping++;
                     console.log(socket.ping)
                 }
-            }, 10000);
+            }, 30000);
 
             function check(){
-                if (socket.ping > 3){
+                if (socket.ping > 1){
                     clearInterval(pinger);
                     socket.reconnect();
                     $log.debug("websocket not pong");

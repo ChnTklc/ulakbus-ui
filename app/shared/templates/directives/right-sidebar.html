@@ -37,7 +37,7 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li ng-repeat="(k, v) in item">
-                        <a ui-sref="#/{{v.wf}}/{{v.model}}?{{v.param}}={{selectedUser.key}}"
+                        <a href="/#/{{v.wf}}/{{v.model}}?{{v.param}}={{selectedUser.key}}"
                            ng-click="breadcrumb([key, v.text], $event)">{{v.text}}</a>
                     </li>
                 </ul>

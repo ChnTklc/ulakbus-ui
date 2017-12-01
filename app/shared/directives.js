@@ -14,11 +14,12 @@ angular.module('ulakbus')
      * @description logout directive provides a button with click event. When triggered it post to
      * '/logout' path of the API.
      */
-    .directive('logout', function ($rootScope, $http, $location, RESTURL, AuthService) {
+    .directive('logout', function ($rootScope, $http, $location, RESTURL, AuthService, $state) {
         return {
             link: function ($scope, $element) {
                 $element.on('click', function () {
-                    AuthService.logout();
+                    $state.go(logout);
+                    //AuthService.logout();
                 });
             }
         };
@@ -214,29 +215,33 @@ angular.module('ulakbus')
             replace: true,
             // link: function ($scope) {
             //     $scope.style = 'width:calc(100% - 300px);';
-            //     $scope.$on('$routeChangeStart', function () {
+            //     $scope.$on('$stateChangeStart', function () {
             //         $scope.style = $location.path() === '/dashboard' ? 'width:calc(100% - 300px);' : 'width:%100 !important;';
             //     });
             // },
 
             scope: {},
-            controller: function ($scope, $rootScope, $cookies, $route, AuthService, WSOps, RESTURL, $log, $location, $window, $timeout) {
+            controller: function ($scope, $rootScope, $cookies, $state, AuthService, WSOps, RESTURL, $log, $location, $window, $timeout) {
                 $scope.isPublicAccess = false;
                 $scope.style = 'width:calc(100% - 300px);';
-                $scope.$on('$routeChangeStart', function (event, next, current) {
+                $scope.$on('$stateChangeStart', function (fromState, toState) {
                     $scope.style = $location.path() === '/dashboard' ? 'width:calc(100% - 300px);' : 'width:%100 !important;';
-                    if($location.path() === '/dashboard'){
-                        $rootScope.loggedInUser ? generate_dashboard() : $location.path("/login");
-                    } /*if (next.$$route && next.$$route.originalPath === '/dashboard') {
-                        generate_dashboard();
-                    } */else if (/*next.$$route && next.$$route.originalPath*/ $location.path() === '/logout') {
+                    if($window.sessionStorage.token === "null") return;
+                    if($location.path() === '/logout')
                         AuthService.logout();
-                    }
+                    if($location.path() === '/dashboard' && $window.sessionStorage.token !== "null"){
+                        generate_dashboard();
+                    } /*if (next.$$state && next.$$state.originalPath === '/dashboard') {
+                        generate_dashboard();
+                    } if (next.$$state && next.$$state.originalPath === '/logout') {
+                        AuthService.logout();
+                    }*/
                 });
 
                 if ($location.path() === '/logout') {
                     AuthService.logout();
                 }
+
                 $scope.$on('setPublicWf', function (event,data) {
                     $scope.isPublicAccess = data;
                 });
@@ -245,61 +250,61 @@ angular.module('ulakbus')
                     if (!$rootScope.current_user){
                         return;
                     }
-                        var sidebarmenu = $('#side-menu');
-                        sidebarmenu.metisMenu();
-                        WSOps.request({view: 'dashboard'})
-                            .then(function (data) {
-                                $scope.allMenuItems = angular.copy(data);
+                    var sidebarmenu = $('#side-menu');
+                    sidebarmenu.metisMenu();
+                    WSOps.request({view: 'dashboard'})
+                        .then(function (data) {
+                            $scope.allMenuItems = angular.copy(data);
 
-                                // regroup menu items based on their category
-                                function reGroupMenuItems(items, baseCategory) {
-                                    var newItems = {};
-                                    angular.forEach(items, function (value, key) {
-                                        newItems[value.kategori] = newItems[value.kategori] || [];
-                                        // value['baseCategory'] = baseCategory;
-                                        newItems[value.kategori].push(value);
-                                    });
-                                    return newItems;
-                                }
-
-                                angular.forEach($scope.allMenuItems, function (value, key) {
-                                    if (key !== 'current_user' && key !== 'settings') {
-                                        $scope.allMenuItems[key] = reGroupMenuItems(value, key);
-                                    }
+                            // regroup menu items based on their category
+                            function reGroupMenuItems(items, baseCategory) {
+                                var newItems = {};
+                                angular.forEach(items, function (value, key) {
+                                    newItems[value.kategori] = newItems[value.kategori] || [];
+                                    // value['baseCategory'] = baseCategory;
+                                    newItems[value.kategori].push(value);
                                 });
+                                return newItems;
+                            }
 
-                                // quick menus to dashboard via rootscope
-
-                                $rootScope.quick_menu = reGroupMenuItems(data.quick_menu, 'quick_menus');
-                                $rootScope.quick_menu = data.quick_menu;
-                                delete data.quick_menu;
-                                $log.debug('quick menu', $rootScope.quick_menu);
-
-                                // broadcast for authorized menu items, consume in dashboard to show search inputs and/or
-                                // related items
-                                $rootScope.$broadcast("authz", data);
-                                $rootScope.searchInputs = data;
-
-                                if (data.current_user) {
-                                    //$rootScope.$broadcast("ws_turn_on");
-                                    // to display main view without flickering
-                                    //$rootScope.$broadcast("user_ready");
+                            angular.forEach($scope.allMenuItems, function (value, key) {
+                                if (key !== 'current_user' && key !== 'settings') {
+                                    $scope.allMenuItems[key] = reGroupMenuItems(value, key);
                                 }
-
-                                $rootScope.current_user = data.current_user;
-                                if (data.ogrenci || data.personel) {
-                                    $rootScope.current_user.can_search = true;
-                                }
-                                $rootScope.settings = data.settings;
-
-                                $scope.menuItems = $scope.prepareMenu({other: $scope.allMenuItems.other});
-
-                                $timeout(function () {
-                                    sidebarmenu.metisMenu();
-                                });
-                                //removes loader from main page after the view is created
-                                $rootScope.$broadcast("user_ready");
                             });
+
+                            // quick menus to dashboard via rootscope
+
+                            $rootScope.quick_menu = reGroupMenuItems(data.quick_menu, 'quick_menus');
+                            $rootScope.quick_menu = data.quick_menu;
+                            delete data.quick_menu;
+                            $log.debug('quick menu', $rootScope.quick_menu);
+
+                            // broadcast for authorized menu items, consume in dashboard to show search inputs and/or
+                            // related items
+                            $rootScope.$broadcast("authz", data);
+                            $rootScope.searchInputs = data;
+
+                            if (data.current_user) {
+                                //$rootScope.$broadcast("ws_turn_on");
+                                // to display main view without flickering
+                                //$rootScope.$broadcast("user_ready");
+                            }
+
+                            $rootScope.current_user = data.current_user;
+                            if (data.ogrenci || data.personel) {
+                                $rootScope.current_user.can_search = true;
+                            }
+                            $rootScope.settings = data.settings;
+
+                            $scope.menuItems = $scope.prepareMenu({other: $scope.allMenuItems.other});
+
+                            $timeout(function () {
+                                sidebarmenu.metisMenu();
+                            });
+                            //removes loader from main page after the view is created
+                            $rootScope.$broadcast("user_ready");
+                        });
                 };
 
                 $scope.$on("generate_dashboard", function () {
@@ -338,9 +343,6 @@ angular.module('ulakbus')
                     });
 
                 $scope.selectedMenu = $location.path();
-                if($location.path() === '/dashboard' || $location.path() === '/login') {
-                    generate_dashboard();
-                }
                 $scope.collapseVar = 0;
                 $scope.multiCollapseVar = 0;
 
@@ -407,7 +409,7 @@ angular.module('ulakbus')
 //             restrict: 'E',
 //             replace: true,
 //             scope: {},
-//             controller: function ($scope, $rootScope, $cookies, $route, AuthService, WSOps, RESTURL, $log, $location, $window, $timeout) {
+//             controller: function ($scope, $rootScope, $cookies, $state, AuthService, WSOps, RESTURL, $log, $location, $window, $timeout) {
 //                 $scope.prepareMenu = function (menuItems) {
 //                     var newMenuItems = {};
 //                     angular.forEach(menuItems, function (value, key) {
@@ -585,7 +587,7 @@ angular.module('ulakbus')
             restrict: 'E',
             replace: true,
             scope: {},
-            controller: function ($scope, $rootScope, $cookies, $route, $http, RESTURL, $log, $location, $window, $timeout) {
+            controller: function ($scope, $rootScope, $cookies, $state, $http, RESTURL, $log, $location, $window, $timeout) {
                 var sidebarUserMenu = $('#side-user-menu');
                 sidebarUserMenu.metisMenu();
 

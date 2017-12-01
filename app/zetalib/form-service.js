@@ -14,7 +14,7 @@
  * @requires ui.bootstrap
  * @type {ng.$compileProvider|*}
  */
-angular.module('ulakbus.formService', ['ui.bootstrap'])
+angular.module('ulakbus.formService', ['ui.bootstrap', 'ui.router'])
 /**
  * Moment.js used for date type conversions.
  * there must be no global object, so we change it into a service here.
@@ -54,7 +54,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
      * @name Generator
      * @description form service's Generator factory service handles all generic form operations
      */
-    .factory('Generator', function ($http, $q, $timeout, $sce, $location, $route, $compile, $log, RESTURL, $rootScope, Moment, WSOps, FormConstraints, $uibModal, $filter, Utils, wfMetadata,$cookies) {
+    .factory('Generator', function ($http, $q, $timeout, $sce, $location, $state, $compile, $log, RESTURL, $rootScope, Moment, WSOps, FormConstraints, $uibModal, $filter, Utils, wfMetadata,$cookies) {
         var generator = {};
         /**
          * @memberof ulakbus.formService
@@ -1420,7 +1420,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
              */
             function redirectTo(scope, page) {
                 var pathUrl;
-                if(angular.isDefined($route.current.$$route.isPublic) && $route.current.$$route.isPublic){
+                if(angular.isDefined($state.current.$$state.isPublic) && $state.current.$$state.isPublic){
                     pathUrl= '/pub/' + scope.form_params.wf;
                     $rootScope.$broadcast("setPublicWf", true);
                 }else{
@@ -1439,7 +1439,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
 
                 // if generated path url and the current path is equal route has to be reload
                 if ($location.path() === pathUrl) {
-                    return $route.reload();
+                    return $state.reload();
                 } else {
                     $location.path(pathUrl);
                 }
@@ -1712,7 +1712,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
      * @param {Object} items
      * @param {Object} $scope
      * @param {Object} $uibModalInstance
-     * @param {Object} $route
+     * @param {Object} $state
      * @returns {Object} returns value for modal
      */
     .controller('ModalController', function ($scope, $uibModalInstance, Generator, items, $timeout, Utils) {
@@ -1946,11 +1946,11 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
      * @description add modal directive for linked models
      * @param {Module} $uibModal
      * @param {Object} $rootScope
-     * @param {Module} $route
+     * @param {Module} $state
      * @param {Service} Generator
      * @returns {Object} openmodal directive
      */
-    .directive('addModalForLinkedModel', function ($uibModal, $rootScope, $route, Generator) {
+    .directive('addModalForLinkedModel', function ($uibModal, $rootScope, $state, Generator) {
         return {
             link: function (scope, element, attributes) {
                 element.on('click', function () {

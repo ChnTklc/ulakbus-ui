@@ -3,8 +3,6 @@
  *
  * This file is licensed under the GNU General Public License v3
  * (GPLv3).  See LICENSE.txt for details.
- *
- * @author Evren Kutar
  */
 
 /**
@@ -319,7 +317,7 @@ angular.module('ulakbus.dashboard')
                     if (Object.keys($scope.actions).length > 0) return;
                     TasksService.get_task_actions($scope.task.key).then(function (data) {
                         $scope.actions = data.map(function(el){
-                            el.link = "#/"+el.wf+"/?task_inv_id="+$scope.task.key;
+                            el.link = "/"+el.wf+"/?task_inv_id="+$scope.task.key;
                             return el;
                         });
 

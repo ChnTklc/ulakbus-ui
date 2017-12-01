@@ -6,7 +6,7 @@
  * (GPLv3).  See LICENSE.txt for details.
  */
 
-angular.module('ulakbus.uitemplates', ['ngRoute', 'ulakbus.crud'])
+angular.module('ulakbus.uitemplates', ['ui.router', 'ulakbus.crud'])
     
     
     .controller('NewDesignsCtrl', function ($scope) {

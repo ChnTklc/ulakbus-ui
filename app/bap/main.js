@@ -18,7 +18,7 @@
 angular.module(
     'ulakbusBap', [
         //'ui.bootstrap',
-        'ngRoute',
+        'ui.router',
         'ngSanitize',
         'ulakbus.formService',
         'ulakbus.crud',

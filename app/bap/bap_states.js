@@ -5,30 +5,41 @@
  * This file is licensed under the GNU General Public License v3
  * (GPLv3).  See LICENSE.txt for details.
  */
+
+
 'use strict';
 
-angular.module('ulakbusBap')
-    .config(['$routeProvider', function ($routeProvider, $route) {
-        $routeProvider
-            .when('/bap_anasayfa', {
-                templateUrl: '/components/bapComponents/dashboard.html'
-            })
-            .when('/:wf/', {
-                templateUrl: '/components/crud/templates/crud-preload.html',
-                controller: 'BapCRUDController'
-            })
-            .when('/:wf/do/:cmd', {
-                templateUrl: '/components/crud/templates/crud.html',
-                controller: 'BapCRUDListFormController'
-            })
-            .otherwise({redirectTo: '/bap_anasayfa'});
-    }])
+var bapanasayfa = {
+    name: 'bap.anasayfa',
+    url: '/bap_anasayfa',
+    templateUrl: '../components/bapComponents/dashboard.html'
+};
+var bapwf = {
+    name: 'bap.wf',
+    url: '/:wf/',
+    templateUrl: '../components/crud/templates/crud-preload.html',
+    controller: 'BapCRUDController'
+};
+var bapwfdocmd = {
+    name: 'bap.wf.do.cmd',
+    url: '/:wf/do/:cmd',
+    templateUrl: '../components/crud/templates/crud.html',
+    controller: 'BapCRUDListFormController'
+};
 
+var app = angular.module('ulakbusBap')
+    .config(function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state(bapanasayfa)
+            .state(bapwf)
+            .state(bapwfdocmd);
+
+        $urlRouterProvider.otherwise('/bap_anasayfa');
+    })
     .run(function ($rootScope) {
         //reset the value of user interaction on form when page refreshes
         $rootScope.isUserClicked = false;
     })
-
     .config(['$httpProvider', function ($httpProvider) {
         /**
          * @memberof ulakbusBap

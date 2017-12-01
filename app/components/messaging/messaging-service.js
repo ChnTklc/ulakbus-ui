@@ -7,7 +7,7 @@
  * @author Evren Kutar
  */
 
-angular.module('ulakbus.messaging', ['ui.bootstrap'])
+angular.module('ulakbus.messaging', ['ui.router', 'ui.bootstrap'])
 
 /**
  * @memberof ulakbus.messaging

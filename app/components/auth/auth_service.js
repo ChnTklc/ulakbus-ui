@@ -15,7 +15,7 @@ angular.module('ulakbus.auth')
      * @name AuthService
      * @description  provides generic functions for authorization process.
      */
-    .factory('AuthService', function ($http, $rootScope, $location, $log, $route, Generator, RESTURL, WSOps, $window,$cookies) {
+    .factory('AuthService', function ($http, $rootScope, $location, $log, $state, Generator, RESTURL, WSOps, $window,$cookies) {
         var authService = {};
 
         authService.get_form = function (scope) {
@@ -27,9 +27,8 @@ angular.module('ulakbus.auth')
                         $rootScope.loggedInUser = true;
                         $rootScope.$broadcast("ws_turn_on");
                         $rootScope.$broadcast("setPublicWf", false);
-                        return $location.path('/dashboard');
-                    }
-                    if (data.cmd === 'retry') {
+                        return $state.go(dashboard);
+                    } else if (data.cmd === 'retry') {
                         $location.path('/login');
                     } else{
                         if (angular.isDefined(data.forms) && $location.path() !== '/login'){
@@ -56,7 +55,7 @@ angular.module('ulakbus.auth')
             return $http
                 .post(RESTURL.url + url, credentials)
                 .success(function (data, status, headers, config) {
-                    //$window.sessionStorage.token = data.token;
+                    $window.sessionStorage.token = data.token;
                     Generator.button_switch(true);
                     if (data.cmd === 'upgrade') {
                         $rootScope.loggedInUser = true;
@@ -87,6 +86,7 @@ angular.module('ulakbus.auth')
          */
         authService.logout = function () {
             $rootScope.$broadcast("show_main_loader");
+            $window.sessionStorage.token = null;
             $rootScope.loginAttempt = 0;
             WSOps.request({wf: 'logout'}).then(function (data) { //TODO not working callback
                 $rootScope.loggedInUser = false;

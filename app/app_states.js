@@ -6,6 +6,13 @@ var login = {
     templateUrl: '/components/auth/login.html',
     controller: 'LoginController'
 };
+var logout = {
+    name: 'logout',
+    url: '/logout',
+    controller: function (AuthService) {
+        AuthService.logout();
+    }
+};
 var dashboard = {
     name: 'dashboard',
     url: '/dashboard',
@@ -107,10 +114,9 @@ var wfmodeldocmdkey = {
 
 angular.module('ulakbus')
     .config(function($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/login');
-
         $stateProvider
             .state(login)
+            .state(logout)
             .state(dashboard)
             .state(settings)
             .state(debugList)
@@ -127,8 +133,10 @@ angular.module('ulakbus')
             .state(wfmodel)
             .state(wfmodeldocmd)
             .state(wfmodeldocmdkey);
+
+        $urlRouterProvider.otherwise('/login');
     })
-    .run(function ($rootScope, AuthService, $state) {
+    .run(function ($rootScope, $window, $location, $state, AuthService) {
         $rootScope.loggedInUser = false;
         $rootScope.loginAttempt = 0;
         $rootScope.current_user = true;
@@ -140,6 +148,12 @@ angular.module('ulakbus')
         $rootScope.isUserClicked = false;
 
         $rootScope.$on('$stateChangeStart', function (event, toState, fromState) {
+            if (toState === dashboard && $window.sessionStorage.token === "null") {
+                event.preventDefault();
+            }
+            if (toState === logout && $window.sessionStorage.token === "null") {
+                event.preventDefault();
+            }
         });
     })
     .config(['$httpProvider', function ($httpProvider) {
@@ -154,7 +168,7 @@ angular.module('ulakbus')
         // no need bar on top of the page, set to false
         cfpLoadingBarProvider.includeBar = false;
         // loaderdiv is a placeholder tag for loader in header-sub-menu.html
-        cfpLoadingBarProvider.parentSelector = 'loaderdiv';
+        cfpLoadingBarProvider.parentSelector = "loaderdiv";
         // loader template will be used when loader initialized
         cfpLoadingBarProvider.spinnerTemplate = '<div class="loader">Loading...</div>';
     }]);

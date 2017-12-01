@@ -8,20 +8,21 @@
 
 'use strict';
 
-angular.module('ulakbus').config(['$routeProvider', function ($routeProvider) {
-    $routeProvider
-        .when('/error/500', {
+angular.module('ulakbus').config(['$stateProvider', function ($stateProvider) {
+        $stateProvider
+        .state('500error', {
+            url: '/error/500',
             templateUrl: '/components/error_pages/500.html',
             controller: '500Controller'
         })
-        .when('/error/404', {
+        .state('404error', {
+            url: '/error/404',
             templateUrl: '/components/error_pages/404.html',
             controller: '404Controller'
         });
 }]);
 
-angular.module('ulakbus.error_pages', ['ngRoute'])
-
+angular.module('ulakbus.error_pages', ['ui.router'])
     .controller('500Controller', function ($scope, $rootScope, $location) {
     })
 

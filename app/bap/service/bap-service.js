@@ -14,7 +14,7 @@ angular.module('ulakbusBap')
  * @name Generator
  * @description form service's Generator factory service handles all generic form operations
  */
-.factory('Generator', function ($http, $q, $timeout, $sce, $location, $route, $compile, $log, RESTURL, $rootScope, Moment, $filter,wfMetadata) {
+.factory('Generator', function ($http, $q, $timeout, $sce, $location, $state, $compile, $log, RESTURL, $rootScope, Moment, $filter,wfMetadata) {
     var generator = {};
     /**
      * @memberof ulakbusBap
@@ -34,13 +34,13 @@ angular.module('ulakbusBap')
      * @description generateParam is a function to generate required params to send backend api.
      * backend needs that params to work without errors
      * @param {object} scope
-     * @param {object} routeParams
+     * @param {object} stateParams
      * @returns {object} scope
      */
-    generator.generateParam = function (scope, routeParams) {
-        scope.url = routeParams.wf;
+    generator.generateParam = function (scope, stateParams) {
+        scope.url = stateParams.wf;
 
-        angular.forEach(routeParams, function (value, key) {
+        angular.forEach(stateParams, function (value, key) {
             if (key.indexOf('_id') > -1 && key !== 'param_id') {
                 scope.param = key;
                 scope.param_id = value;
@@ -50,15 +50,15 @@ angular.module('ulakbusBap')
         scope.form_params = {
             //cmd: cmd,
             // model name in ulakbus
-            model: routeParams.model,
+            model: stateParams.model,
             // generic value passing by backend. would be any of these: id, personel_id, etc.
-            param: scope.param || routeParams.param,
+            param: scope.param || stateParams.param,
             // generic value passing by backend. would be the value of param
-            id: scope.param_id || routeParams.param_id,
-            wf: routeParams.wf,
-            object_id: routeParams.key,
+            id: scope.param_id || stateParams.param_id,
+            wf: stateParams.wf,
+            object_id: stateParams.key,
             filters: {},
-            token: routeParams.token
+            token: stateParams.token
         };
 
         if (scope.param_id) {
@@ -139,7 +139,7 @@ angular.module('ulakbusBap')
 
             // if generated path url and the current path is equal route has to be reload
             if ($location.path() === pathUrl) {
-                return $route.reload();
+                $state.reload();
             } else {
                 $location.path(pathUrl);
             }

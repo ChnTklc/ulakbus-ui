@@ -6,7 +6,7 @@
             </div>
         </div>
         <ul class="task-manager-dropdown dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-            <li ng-repeat="action in actions"><a ui-sref="{{action.link}}">{{action.title}}</a></li>
+            <li ng-repeat="action in actions"><a href="{{action.link}}">{{action.title}}</a></li>
         </ul>
     </div>
     <a href="{{link}}" class="clearfix">

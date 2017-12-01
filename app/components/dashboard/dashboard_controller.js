@@ -16,14 +16,15 @@
  *
  * @type {ng.$compileProvider|*}
  */
-angular.module('ulakbus.dashboard', [])
+angular.module('ulakbus.dashboard', ['ui.router'])
     .config(function ($uibTooltipProvider) {
         $uibTooltipProvider.setTriggers({'click': 'mouseleave'});
     })
 
-    .controller('DashController', function ($scope, $rootScope, $routeParams, $route, $timeout, $http, $cookies, $log, RESTURL, Generator, WSOps) {
+    .controller('DashController', function ($scope, $window, $rootScope, $stateParams, $state, $timeout, $http, $cookies, $log, RESTURL, Generator, WSOps, AuthService) {
         // first generate_dashboard broadcasted to get menu and dashboard items
         // sidebar directive listens for "generate_dashboard"
+        if($window.sessionStorage.token === "null") return ;
         $rootScope.$broadcast("generate_dashboard");
 
         $scope.section = function (section_index) {
@@ -154,8 +155,8 @@ angular.module('ulakbus.dashboard', [])
             $rootScope.$broadcast("markasread", items);
         };
 
-        //if ($routeParams.cmd = 'reload') {
-        //    $route.reload();
+        //if ($stateParams.cmd = 'reload') {
+        //    $state.reload();
         //}
 
     });

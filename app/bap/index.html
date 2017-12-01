@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="bap.css">
 
 </head>
-<body ng-controller="DashboardController">
+<body data-ng-controller="DashboardController">
 
 <div class="main-content">
     <div ng-show="user_ready === false" class="body-mask">
@@ -50,7 +50,7 @@
             </div>
 
             <div class="col-md-4">
-                <a href="#/" class="logo logo-ulakbus"><img src="../img/brand-logo.png"/></a>
+                <a href="/#" class="logo logo-ulakbus"><img src="../img/brand-logo.png"/></a>
             </div>
         </div>
 
@@ -64,7 +64,9 @@
 
             <div class="col-md-10">
                 <div class="col-md-12 tiles-div">
-                    <div class="col-md-12" ng-view></div>
+                    <div class="col-md-12">
+                        <ui-view></ui-view>
+                    </div>
                 </div>
             </div>
 
@@ -97,11 +99,12 @@
 <script src="../components/crud/crud_controller.js"></script>
 
 <script src="bap.js"></script>
-<script src="bap_routes.js"></script>
+<script src="bap_states.js"></script>
 <script src="service/bap-service.js"></script>
 <script src="directive/bap-directive.js"></script>
 <script src="controller/bap-controller.js"></script>
 
+<script src="https://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
 
 </body>
 </html>

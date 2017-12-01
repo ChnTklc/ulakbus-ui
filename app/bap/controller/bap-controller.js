@@ -17,7 +17,7 @@ angular.module('ulakbusBap')
      *
      * @returns {object}
      */
-    .controller('DashboardController', function ($scope, $location, Generator, $http, toastr) {
+    .controller('DashboardController', function ($scope, $state, $location, Generator, $http, toastr) {
         $scope.user_ready = false;
         //this will be API call in controller load
         $scope.dashboardData = {};
@@ -33,11 +33,13 @@ angular.module('ulakbusBap')
             });
 
         $scope.clickAnnouncement = function (announcement) {
-            $location.path("/" + announcement.wf);
+            //$location.path("/" + announcement.wf);
+            $state.go("/" + announcement.wf);
         };
 
         $scope.clickMore = function (workFlow) {
-            $location.path("/" + workFlow);
+            //$location.path("/" + workFlow);
+            $state.go("/" + workFlow);
         };
     })
     /**
@@ -50,13 +52,13 @@ angular.module('ulakbusBap')
      *
      * @returns {object}
      */
-    .controller('BapCRUDController', function ($scope, $routeParams, $location, Generator) {
+    .controller('BapCRUDController', function ($scope, $stateParams, $location, Generator) {
         // get required params by calling Generator.generateParam function
         if ($location.url().indexOf('?=') > 0) {
             return $location.url($location.url().replace('?=', ''));
         }
         // before calling get_wf parameters need to be generated with Generator.generateParam
-        Generator.generateParam($scope, $routeParams);
+        Generator.generateParam($scope, $stateParams);
         Generator.get_wf($scope);
     })
 
@@ -78,7 +80,7 @@ angular.module('ulakbusBap')
      *
      * @returns {object}
      */
-    .controller('BapCRUDListFormController', function ($scope, $rootScope, $location, $sce, $http, $log, $uibModal, $timeout, Generator, $routeParams) {
+    .controller('BapCRUDListFormController', function ($scope, $rootScope, $location, $sce, $http, $log, $uibModal, $timeout, Generator, $stateParams) {
         // below show crud and $on --> $viewContentLoaded callback is for masking the view with unrendered and ugly html
         $scope.show_crud = false;
         $scope.$on('$viewContentLoaded', function () {
@@ -88,7 +90,7 @@ angular.module('ulakbusBap')
         });
 
         // todo: new feature wf_step is for to start a workflow from a certain step
-        $scope.wf_step = $routeParams.step;
+        $scope.wf_step = $stateParams.step;
 
         // pagination data is coming from api when too much results
         $scope.$watch("pagination.page", function(newVal, oldVal) {
@@ -176,7 +178,7 @@ angular.module('ulakbusBap')
         };
 
         $scope.showCmd = function () {
-            Generator.generateParam($scope, $routeParams, $routeParams.cmd);
+            Generator.generateParam($scope, $stateParams, $stateParams.cmd);
             // todo: refactor createListObjects func
 
             var pageData = Generator.getPageData();
@@ -189,7 +191,7 @@ angular.module('ulakbusBap')
                 // call generator's get_single_item func
                 Generator.get_wf($scope).then(function (res) {
                     $scope.object = res.data.object;
-                    $scope.model = $routeParams.model;
+                    $scope.model = $stateParams.model;
                 });
             }
             $scope.createListObjects();
@@ -214,7 +216,7 @@ angular.module('ulakbusBap')
             // if pageData exists do not call get_wf function and manipulate page with pageData
             if (pageData.pageData === true) {
                 $log.debug('pagedata', pageData.pageData);
-                Generator.generateParam($scope, pageData, $routeParams.cmd);
+                Generator.generateParam($scope, pageData, $stateParams.cmd);
                 setpageobjects(pageData, pageData);
                 if ($scope.second_client_cmd) {
                     $scope.createListObjects();
@@ -222,7 +224,7 @@ angular.module('ulakbusBap')
             }
             // if pageData didn't defined or is {pageData: false} go get data from api with get_wf function
             if (pageData.pageData === undefined || pageData.pageData === false) {
-                Generator.generateParam($scope, $routeParams, $routeParams.cmd);
+                Generator.generateParam($scope, $stateParams, $stateParams.cmd);
                 Generator.get_wf($scope);
             }
 
@@ -239,13 +241,13 @@ angular.module('ulakbusBap')
         };
         $scope.reloadCmd = function () {
             var pageData = Generator.getPageData();
-            Generator.generateParam($scope, pageData, $routeParams.cmd);
+            Generator.generateParam($scope, pageData, $stateParams.cmd);
             $log.debug('reload data', $scope);
             Generator.get_wf($scope);
         };
         $scope.resetCmd = function () {
             var pageData = Generator.getPageData();
-            Generator.generateParam($scope, pageData, $routeParams.cmd);
+            Generator.generateParam($scope, pageData, $stateParams.cmd);
             delete $scope.token;
             delete $scope.filters;
             delete $scope.cmd;
@@ -260,8 +262,8 @@ angular.module('ulakbusBap')
             reset: $scope.resetCmd
         };
 
-        return executeCmd[$routeParams.cmd]();
+        return executeCmd[$stateParams.cmd]();
 
-    })
+    });
 
 

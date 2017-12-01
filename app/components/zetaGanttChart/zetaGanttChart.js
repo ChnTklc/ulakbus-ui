@@ -7,15 +7,14 @@
  */
 
 angular.module('ulakbus.gantt', [
+    'ui.router',
     'gantt',
     'gantt.tooltips',
     'gantt.bounds',
     'gantt.tree',
     'gantt.groups',
     'gantt.overlap'
-]);
-
-angular.module('ulakbus.gantt')
+])
 .directive('zetaGanttChart', function() {
     return {
         templateUrl: '/components/zetaGanttChart/zeta-gantt-chart.html',

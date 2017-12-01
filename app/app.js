@@ -37,12 +37,12 @@ angular.module(
         'ulakbus.debug',
         'ulakbus.devSettings',
         'ulakbus.version',
+        'ulakbus.uitemplates',
+        'ulakbus.gantt',
         'gettext',
         'markdown',
         'ngWebSocket',
-        'ulakbus.uitemplates',
-        'ui.select',
-        'ulakbus.gantt'
+        'ui.select'
     ])
     /**
      * @memberof ulakbus
@@ -128,12 +128,12 @@ angular.module(
 
         return isOnlineService;
     })
-    // .service('DESIGN', function ($routeParams, $cookies, $log) {
+    // .service('DESIGN', function ($stateParams, $cookies, $log) {
     //     // use route param to change cookie for design
     //     // this is a config as a service added for designer can work without backend
     //     try {
-    //         if (angular.isDefined($routeParams.design) || location.hash.split('?')[1].split('=')[1]) {
-    //             $cookies.put('design', $routeParams.design || location.hash.split('?')[1].split('=')[1]);
+    //         if (angular.isDefined($stateParams.design) || location.hash.split('?')[1].split('=')[1]) {
+    //             $cookies.put('design', $stateParams.design || location.hash.split('?')[1].split('=')[1]);
     //         }
     //     } catch (e){
     //         $log.error("Error for design parameter", e);

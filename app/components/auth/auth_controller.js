@@ -14,10 +14,10 @@
  * @module ulakbus.auth
  * @description ulakbus.auth module handles authorization process of ulakbus-ui.
  *
- * @requires ngRoute
+ * @requires ui.router
  * @requires ngCookies
  */
-angular.module('ulakbus.auth', ['ngRoute', 'ngCookies'])
+angular.module('ulakbus.auth', ['ui.router', 'ngCookies'])
     /**
      * @memberof ulakbus.auth
      * @ngdoc controller
@@ -25,7 +25,7 @@ angular.module('ulakbus.auth', ['ngRoute', 'ngCookies'])
      * @description LoginCtrl responsible to handle login process.<br>
      * Using 'ulakbus.formService.get_form' function generates the login form and post it to the API with input datas.
      */
-    .controller('LoginController', function ($scope, $q, $timeout, $location, $routeParams, $rootScope, $log, WSOps, Generator, AuthService,$cookies) {
+    .controller('LoginController', function ($scope, $q, $timeout, $location, $stateParams, $rootScope, $log, WSOps, Generator, AuthService,$cookies) {
         $scope.showLogo = false;
         $scope.url = 'login';
         $scope.msgbox=angular.fromJson($cookies.get("logoutmsg"));
