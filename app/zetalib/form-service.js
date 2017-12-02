@@ -1420,7 +1420,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap', 'ui.router'])
              */
             function redirectTo(scope, page) {
                 var pathUrl;
-                if(angular.isDefined($state.current.$$state.isPublic) && $state.current.$$state.isPublic){
+                if(angular.isDefined($state.current.isPublic) && $state.current.isPublic){
                     pathUrl= '/pub/' + scope.form_params.wf;
                     $rootScope.$broadcast("setPublicWf", true);
                 }else{

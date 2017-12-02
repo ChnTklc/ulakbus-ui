@@ -33,8 +33,8 @@ angular.module('ulakbusBap')
             });
 
         $scope.clickAnnouncement = function (announcement) {
-            //$location.path("/" + announcement.wf);
-            $state.go("/" + announcement.wf);
+            $location.path("/" + announcement.wf);
+            //$state.go("/" + announcement.wf);
         };
 
         $scope.clickMore = function (workFlow) {
