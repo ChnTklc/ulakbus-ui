@@ -57,57 +57,57 @@ var gridreport = {
 };
 var wfstate = {
     name: 'wfstate',
-    url: '/:wf/',
+    url: '/{wf}',
     templateUrl: '/components/crud/templates/crud-preload.html',
     controller: 'CRUDController'
 };
 var pubwf = {
     name: 'pub.wf', 
-    url: '/pub/:wf/',
+    url: '/pub/{wf}',
     templateUrl: '/components/crud/templates/crud-preload.html',
     controller: 'CRUDController',
     isPublic: true
 };
 var cwfwftoken = {
     name: 'cwf.wf.token',
-    url: '/cwf/:wf/:token',
+    url: '/cwf/{wf}/{token}',
     templateUrl: '/components/crud/templates/crud.html',
     controller: 'CRUDController'
 };
 var wfdocmd = {
     name: 'wf.do.cmd',
-    url: '/:wf/do/:cmd',
+    url: '/{wf}/do/{cmd}',
     templateUrl: '/components/crud/templates/crud.html',
     controller: 'CRUDListFormController'
 };
 var pubwfdocmd = {
     name: 'pub.wf.do.cmd',
-    url: '/pub/:wf/do/:cmd',
+    url: '/pub/{wf}/do/{cmd}',
     templateUrl: 'components/crud/templates/crud.html',
     controller: 'CRUDListFormController',
     isPublic: true
 };
 var wfdocmdkey = {
     name: 'wf.do.cmd.key',
-    url: '/:wf/do/:cmd/:key',
+    url: '/{wf}/do/{cmd}/{key}',
     templateUrl: '/components/crud/templates/crud.html',
     controller: 'CRUDListFormController'
 };
 var wfmodel = {
     name: 'wf.model',
-    url: '/:wf/:model',
+    url: '/{wf}/{model}',
     templateUrl: '/components/crud/templates/crud-preload.html',
     controller: 'CRUDController'
 };
 var wfmodeldocmd = {
     name: 'wf.model.do.cmd',
-    url: '/:wf/:model/do/:cmd',
+    url: '/{wf}/{model}/do/{cmd}',
     templateUrl: '/components/crud/templates/crud.html',
     controller: 'CRUDListFormController'
 };
 var wfmodeldocmdkey = {
     name: 'wf.model.do.cmd.key', 
-    url: '/:wf/:model/do/:cmd/:key',
+    url: '/{wf}/{model}/do/{cmd}/{key}',
     templateUrl: '/components/crud/templates/crud.html',
     controller: 'CRUDListFormController'
 };

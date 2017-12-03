@@ -9,30 +9,32 @@
 
 'use strict';
 
-var bapanasayfa = {
-    name: 'bap.anasayfa',
-    url: '/bap_anasayfa',
-    templateUrl: '../components/bapComponents/dashboard.html'
-};
-var bapwf = {
-    name: 'bap.wf',
-    url: '/:wf/',
-    templateUrl: '../components/crud/templates/crud-preload.html',
-    controller: 'BapCRUDController'
-};
-var bapwfdocmd = {
-    name: 'bap.wf.do.cmd',
-    url: '/:wf/do/:cmd',
-    templateUrl: '../components/crud/templates/crud.html',
-    controller: 'BapCRUDListFormController'
-};
-
 var app = angular.module('ulakbusBap')
     .config(function($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state(bapanasayfa)
-            .state(bapwf)
-            .state(bapwfdocmd);
+            .state('bap.anasayfa', {
+                url: '/bap_anasayfa',
+                templateUrl: '../components/bapComponents/dashboard.html'
+            })
+            .state('bap.wf', {
+                reloadOnSearch: false,
+                url: '/:wf',
+                templateUrl: '../components/crud/templates/crud-preload.html',
+                controller: 'BapCRUDController',
+                params: {
+                    wf: {value: null, squash: true}
+                }
+            })
+            .state('bap.wf.do.cmd', {
+                reloadOnSearch: false,
+                url: '/:wf/do/:cmd',
+                templateUrl: '../components/crud/templates/crud.html',
+                controller: 'BapCRUDListFormController',
+                params: {
+                    wf: { value: null, squash: true },
+                    cmd : { value: null, squash: true }
+                }
+            });
 
         $urlRouterProvider.otherwise('/bap_anasayfa');
     })

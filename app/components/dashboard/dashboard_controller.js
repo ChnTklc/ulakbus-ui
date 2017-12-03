@@ -21,7 +21,7 @@ angular.module('ulakbus.dashboard', ['ui.router'])
         $uibTooltipProvider.setTriggers({'click': 'mouseleave'});
     })
 
-    .controller('DashController', function ($scope, $window, $rootScope, $stateParams, $state, $timeout, $http, $cookies, $log, RESTURL, Generator, WSOps, AuthService) {
+    .controller('DashController', function ($scope, $window, $rootScope, $state, $timeout, $http, $cookies, $log, RESTURL, Generator, WSOps, AuthService) {
         // first generate_dashboard broadcasted to get menu and dashboard items
         // sidebar directive listens for "generate_dashboard"
         if($window.sessionStorage.token === "null") return ;

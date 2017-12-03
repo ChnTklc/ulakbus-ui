@@ -28,7 +28,7 @@ angular.module('ulakbusBap')
                 //since the menuItems comes from the API call it is undefined when page load
                 $scope.$watch('menuItems', function (newVal, oldVal) {
                     if(angular.isDefined(newVal)){
-                        var pathParam =  $state.params.wf;
+                        var pathParam =  $state.current.wf;
                         for(var i=0; i<newVal.items.length; i++){
                             if(newVal.items[i].wf === pathParam){
                                 $scope.selectedMenu = i;
@@ -50,7 +50,7 @@ angular.module('ulakbusBap')
      * @name leftMenu
      * @description Creates a left sidebar menu for the dashboard
      */
-    .directive('topActionButtons', function () {
+    .directive('topActionButtons', function ($state) {
         return {
             templateUrl: '/components/bapComponents/top-action-buttons.html',
             restrict: 'E',
@@ -62,6 +62,7 @@ angular.module('ulakbusBap')
                 $scope.setActive = function (index, button) {
                     $scope.selectedButton  = index;
                     $location.path("/"+button.wf);
+                    //$state.go(bapwf, button.wf);
                 };
 
             }

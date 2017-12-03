@@ -38,8 +38,8 @@ angular.module('ulakbusBap')
         };
 
         $scope.clickMore = function (workFlow) {
-            //$location.path("/" + workFlow);
-            $state.go("/" + workFlow);
+            $location.path("/" + workFlow);
+            //$state.go("/" + workFlow);
         };
     })
     /**
@@ -183,7 +183,7 @@ angular.module('ulakbusBap')
 
             var pageData = Generator.getPageData();
             if (pageData.pageData === true) {
-                $scope.object_title = pageData.object_title
+                $scope.object_title = pageData.object_title;
                 $scope.object = pageData.object;
                 Generator.setPageData({pageData: false});
             }

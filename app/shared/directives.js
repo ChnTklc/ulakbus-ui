@@ -172,7 +172,7 @@ angular.module('ulakbus')
                 scope.user = false;
                 scope.$root.$watch("current_user",change,true);
                 function change(newVal,oldVal) {
-                    if(newVal.constructor == Object){
+                    if(newVal.constructor === Object){
                         if (newVal !== oldVal) {
                             scope.user = newVal;
                             scope.showRole = (newVal.roles.length > 1);
@@ -192,7 +192,7 @@ angular.module('ulakbus')
                 scope.user = false;
                 scope.$root.$watch("current_user",change,true);
                 function change(newVal,oldVal) {
-                    if(newVal.constructor == Object){
+                    if(newVal.constructor === Object){
                         if (newVal !== oldVal) {
                             scope.user = newVal;
                             scope.tooltip = $sce.trustAsHtml(newVal.role_details.unit_name.replace(/\s/g,"&nbsp;") + "<br/>" +  newVal.role_details.abs_name.replace(/\s/g,"&nbsp;") );
