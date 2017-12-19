@@ -81,12 +81,12 @@ angular.module('ulakbus')
             .otherwise({redirectTo: '/login'});
     }])
 
-    .run(function ($rootScope, AuthService) {
+    .run(function ($rootScope, AuthService, $location) {
         $rootScope.loggedInUser = false;
         $rootScope.loginAttempt = 0;
         $rootScope.current_user = true;
         //check if page is not a public page
-        if(location.hash.indexOf('/pub/') === -1){
+        if(location.hash.indexOf('/pub/') === -1 && $location.path() !== '/login'){
             AuthService.check_auth();
         }
         //reset the value of user interaction on form when page refreshes
