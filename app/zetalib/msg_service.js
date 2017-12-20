@@ -45,6 +45,11 @@ function msgService($q, ErrorService, $log, $rootScope, $timeout, $location, Uti
             data.error && (data.cmd = "error");
             !data.cmd && (data.cmd = "init");
 
+            /*if(data.cmd === "error"){ // not working
+                $rootScope.$broadcast("button_switch_true");
+                //window.location.reload();
+            }*/
+
             switch (data.cmd) {
                 case "init":
                     (data.callbackID in queue) ?

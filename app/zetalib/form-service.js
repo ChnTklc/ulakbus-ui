@@ -354,7 +354,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
                         delete scope.form_params.flow;
                         if (v.cmd) {
                             scope.form_params["cmd"] = v.cmd;
-                            if(scope.form_params["cmd"] == "indir"){
+                            if(scope.form_params["cmd"] === "indir" || "sync"){
                                 generator.button_switch(true);
                             }
                             else {
@@ -1313,6 +1313,10 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
             $log.debug('buttons >> ', positions[position]);
         };
 
+        /*$rootScope.$on("button_switch_true", function (){ // not working
+            generator.button_switch(true);
+        });*/
+
         generator.disableScreen = function(position) {
             // creates <div class="overlay"></div> ahnd
             // adds it to the DOM
@@ -1905,7 +1909,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
                                             }
 
                                             //}
-                                        } 
+                                        }
                                     });
                                 }
 
