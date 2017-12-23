@@ -380,13 +380,9 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
 
                                 if (scope[workOnForm].$valid) {
                                     generator.submit(scope, redirectTo);
-                                    if(scope.form_params["cmd"] == "indir"){
+                                    if(scope.form_params["cmd"] === "indir" || "printout"){
                                         generator.button_switch(true);
                                     }
-                                    else {
-                                        generator.button_switch(false);
-                                    }
-
                                     scope.$broadcast('disposeModal');
                                 } else {
                                     // focus to first input with validation error
