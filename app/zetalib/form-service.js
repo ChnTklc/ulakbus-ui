@@ -354,12 +354,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
                         delete scope.form_params.flow;
                         if (v.cmd) {
                             scope.form_params["cmd"] = v.cmd;
-                            if(scope.form_params["cmd"] === "indir" || "sync"){
-                                generator.button_switch(true);
-                            }
-                            else {
-                                generator.button_switch(false);
-                            }
+
                         }
                         if (v.flow) {
                             scope.form_params["flow"] = v.flow;
@@ -385,6 +380,12 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
 
                                 if (scope[workOnForm].$valid) {
                                     generator.submit(scope, redirectTo);
+                                    if(scope.form_params["cmd"] == "indir"){
+                                        generator.button_switch(true);
+                                    }
+                                    else {
+                                        generator.button_switch(false);
+                                    }
 
                                     scope.$broadcast('disposeModal');
                                 } else {
@@ -503,8 +504,9 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
                             try {
 
                                 if (propInSchema.type === 'date') {
-                                    node[propName] = moment(prop).format('DD.MM.YYYY');
-                                    list.model[fieldName][propName] = moment(prop).format('DD.MM.YYYY');
+                                    node[propName] = prop;
+                                    list.model[fieldName][propName] = prop;
+
                                 }
                                 if (propInSchema.type === 'select') {
                                     node[propName] = generator.item_from_array(prop.toString(), list.schema.properties[propName].titleMap)
@@ -1931,7 +1933,7 @@ angular.module('ulakbus.formService', ['ui.bootstrap'])
                                 listNodeItem.model[childmodel.edit] = childmodel.model;
                                 //Generator.convertDate(reformattedModel);
                                 if (Object.keys(reformattedModel).length > 0) {
-                                    listNodeItem.items[childmodel.edit] = reformattedModel;
+                                    listNodeItem.items[childmodel.edit] = childmodel.model;
                                 } else {
                                     listNodeItem.items[childmodel.edit] = angular.copy(childmodel.model);
                                 }

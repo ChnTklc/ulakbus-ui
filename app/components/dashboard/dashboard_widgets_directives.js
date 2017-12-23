@@ -359,7 +359,7 @@ angular.module('ulakbus.dashboard')
             replace: true
         }
     })
-    .directive('zetaGrid', function(WSOps, uiGridConstants, $timeout, $q, $rootScope) {
+    .directive('zetaGrid', function(/*WSOps,*/ $http, uiGridConstants, $timeout, $q, $rootScope, Generator, RESTURL) {
         return {
             templateUrl: '/components/dashboard/directives/zeta-grid.html',
             restrict: 'E',
@@ -475,6 +475,7 @@ angular.module('ulakbus.dashboard')
                         //empty previous data to assign new sorted data set obtained from server
                         $scope.data = [];
                         $scope.gridOptionsSelected = response.gridOptions;
+                        handleGridData(response);
                         $scope.gridApi.infiniteScroll.saveScrollPercentage();
                         //sorted data obtained from the server
                         $scope.data = response.gridOptions.data;

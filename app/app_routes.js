@@ -80,8 +80,7 @@ angular.module('ulakbus')
             })
             .otherwise({redirectTo: '/login'});
     }])
-
-    .run(function ($rootScope, AuthService, $location) {
+    .run(function ($rootScope, AuthService, $location) {
         $rootScope.loggedInUser = false;
         $rootScope.loginAttempt = 0;
         $rootScope.current_user = true;
@@ -93,6 +92,10 @@ angular.module('ulakbus')
         $rootScope.isUserClicked = false;
 
         $rootScope.$on("$routeChangeStart", function (event, next, current) {
+            if(!$rootScope.loggedInUser && $location.path() !== '/login'){
+                $location.path('/login');
+                event.preventDefault();
+            }
         });
     })
     .config(['$httpProvider', function ($httpProvider) {
