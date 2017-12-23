@@ -359,7 +359,7 @@ angular.module('ulakbus.dashboard')
             replace: true
         }
     })
-    .directive('zetaGrid', function(WSOps, $http, uiGridConstants, $timeout, $q, $rootScope, Generator, RESTURL) {
+    .directive('zetaGrid', function(WSOps, uiGridConstants, $timeout, $q, $rootScope) {
         return {
             templateUrl: '/components/dashboard/directives/zeta-grid.html',
             restrict: 'E',

@@ -32,12 +32,6 @@ angular.module('ulakbus')
                 },
                 'response': function (response) {
                     //Will only be called for HTTP up to 300
-
-                    if(response.data.cmd === "error"){
-                        ErrorService.handle(response.data, 'http');
-                        return ;
-                    }
-
                     if (response.data._debug_queries) {
                         if (response.data._debug_queries.length > 0) {
                             $rootScope.debug_queries = $rootScope.debug_queries || [];
